@@ -1,52 +1,88 @@
 import './index.css';
-import {initialCards, createCard, deleteCard, likeCard, contentCard, renderCard} from './components/cards.js';
-import {openModal, closeModal, closeModalEcs} from './components/modal.js';
+import {initialCards} from './components/cards.js';
+import {createCard, deleteCard, likeCard} from './components/card.js';
+import {openModal, handleCloseModal, closeModalEcs, closeModal} from './components/modal.js';
 
 export const cardTemplate = document.querySelector('#card-template').content;
 export const placesList = document.querySelector('.places__list');
 
+
 const editProfile = document.forms['edit-profile'];
 export const nameInput = editProfile.elements.name;
 export const jobInput = editProfile.elements.description;
-export const popup1 = document.querySelector('.popup_type_edit');
+export const popupTypeEdit= document.querySelector('.popup_type_edit');
 const profileEditBtn = document.querySelector('.profile__edit-button');
 
-export const popup2 = document.querySelector('.popup_type_new-card');
+export const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const profileAddBtn = document.querySelector('.profile__add-button');
 
 const newPlace = document.forms['new-place'];
 const placeInput = newPlace.elements['place-name'];
 const linkInput = newPlace.elements.link;
 
-export const popup3 = document.querySelector('.popup_type_image');
+export const popupTypeImage= document.querySelector('.popup_type_image');
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 
 
-renderCard(initialCards);
+profileEditBtn.addEventListener('click', function() {
+    nameInput.value = profileTitle.textContent;
+    jobInput.value = profileDescription.textContent;
+    openModal(popupTypeEdit);
+})
 
-function handleFormSubmit(evt) {
+editProfile.addEventListener('submit', handleProfileSubmit);
+function handleProfileSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = nameInput.value;                                    
     profileDescription.textContent = jobInput.value;
-    popup1.classList.remove('popup_is-opened');
+    closeModal(popupTypeEdit);
 };
- 
-profileEditBtn.addEventListener('click', openModal);
-popup1.addEventListener('submit', handleFormSubmit);
-popup1.addEventListener('click', closeModal);
-popup1.addEventListener('keydown', closeModalEcs);
 
-profileAddBtn.addEventListener('click', openModal);
-popup2.addEventListener('click', closeModal);
-popup2.addEventListener('keydown', closeModalEcs);
-popup2.addEventListener('submit', placeFormSubmit);
- 
-function placeFormSubmit(evt) {
+popupTypeEdit.addEventListener('click', handleCloseModal);
+popupTypeEdit.addEventListener('keydown', closeModalEcs);
+
+
+
+profileAddBtn.addEventListener('click', function() {
+    openModal(popupTypeNewCard);
+})
+
+popupTypeNewCard.addEventListener('submit', handlePlaceSubmit);
+function handlePlaceSubmit(evt) {
     evt.preventDefault();
     const link = linkInput.value;
     const place = placeInput.value;
-    const card = createCard(link, place, deleteCard, likeCard, contentCard);
+    const card = createCard(link, place, deleteCard, likeCard, zoomContentCard);
     placesList.prepend(card);
     newPlace.reset();
-    popup2.classList.remove('popup_is-opened');
+    closeModal(popupTypeNewCard);
 };
 
+popupTypeNewCard.addEventListener('click', handleCloseModal);
+popupTypeNewCard.addEventListener('keydown', closeModalEcs);
+
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
+
+export function zoomContentCard (evt) {
+    if (evt.target.classList.contains('card__image')) {
+        openModal(popupTypeImage);
+        popupImage.src = evt.target.src;
+        popupImage.alt = evt.target.alt;
+        popupCaption.textContent = evt.target.alt;
+    }
+  };
+
+popupTypeImage.addEventListener('click', handleCloseModal);
+
+
+export function renderCard (array) {
+    array.forEach(function(item) {
+        const card = createCard(item.link, item.name, deleteCard, likeCard, zoomContentCard);
+        placesList.append(card);
+    })
+};
+
+renderCard(initialCards);
