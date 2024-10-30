@@ -6,9 +6,10 @@ export function createCard (link, name, deleteBtn, likeBtn, contentImage) {
   const deleteButton = cardContent.querySelector('.card__delete-button');
   const cardLikeBtn = cardContent.querySelector('.card__like-button');
   const cardImage = cardContent.querySelector('.card__image');
-  cardContent.querySelector('.card__image').src = link;
-  cardContent.querySelector('.card__image').alt = name;
-  cardContent.querySelector('.card__title').textContent = name;
+  const cardTitle = cardContent.querySelector('.card__title');
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardTitle.textContent = name;
 
   deleteButton.addEventListener('click', deleteBtn);
   cardLikeBtn.addEventListener('click', likeBtn);
