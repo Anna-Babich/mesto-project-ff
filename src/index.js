@@ -6,7 +6,6 @@ import {openModal, handleCloseModal, closeModalEcs, closeModal} from './componen
 export const cardTemplate = document.querySelector('#card-template').content;
 export const placesList = document.querySelector('.places__list');
 
-
 const editProfile = document.forms['edit-profile'];
 export const nameInput = editProfile.elements.name;
 export const jobInput = editProfile.elements.description;
@@ -21,6 +20,8 @@ const placeInput = newPlace.elements['place-name'];
 const linkInput = newPlace.elements.link;
 
 export const popupTypeImage= document.querySelector('.popup_type_image');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -41,8 +42,6 @@ function handleProfileSubmit(evt) {
 };
 
 popupTypeEdit.addEventListener('click', handleCloseModal);
-popupTypeEdit.addEventListener('keydown', closeModalEcs);
-
 
 
 profileAddBtn.addEventListener('click', function() {
@@ -61,10 +60,7 @@ function handlePlaceSubmit(evt) {
 };
 
 popupTypeNewCard.addEventListener('click', handleCloseModal);
-popupTypeNewCard.addEventListener('keydown', closeModalEcs);
 
-const popupImage = popupTypeImage.querySelector('.popup__image');
-const popupCaption = popupTypeImage.querySelector('.popup__caption');
 
 export function zoomContentCard (evt) {
     if (evt.target.classList.contains('card__image')) {

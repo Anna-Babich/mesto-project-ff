@@ -1,16 +1,18 @@
-import {cardTemplate, placesList} from '../index.js';
+import {cardTemplate, placesList, cardLikeBtn} from '../index.js';
 
 export function createCard (link, name, deleteBtn, likeBtn, contentImage) {
   const card = cardTemplate.querySelector('.places__item');
   const cardContent = card.cloneNode(true);
   const deleteButton = cardContent.querySelector('.card__delete-button');
+  const cardLikeBtn = cardContent.querySelector('.card__like-button');
+  const cardImage = cardContent.querySelector('.card__image');
   cardContent.querySelector('.card__image').src = link;
   cardContent.querySelector('.card__image').alt = name;
   cardContent.querySelector('.card__title').textContent = name;
 
   deleteButton.addEventListener('click', deleteBtn);
-  cardContent.addEventListener('click', likeBtn);
-  placesList.addEventListener('click', contentImage);
+  cardLikeBtn.addEventListener('click', likeBtn);
+  cardImage.addEventListener('click', contentImage);
 
   return cardContent;
 };

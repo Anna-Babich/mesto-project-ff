@@ -1,14 +1,15 @@
 export function openModal (popup) {
-    return popup.classList.add('popup_is-opened');
+    popup.classList.add('popup_is-opened');
+    popup.addEventListener('keydown', closeModalEcs);
 };
 
-
 export function closeModal (popup) {
-    return popup.classList.remove('popup_is-opened');
+    popup.classList.remove('popup_is-opened');
+    popup.removeEventListener('keydown', closeModalEcs);
 }
 
 export function handleCloseModal (evt) {
-    let openPopup = document.querySelector('.popup_is-opened');
+    const openPopup = document.querySelector('.popup_is-opened');
     if(evt.target.classList.contains('popup__close')) {
         closeModal(openPopup);
     } else if (evt.target.classList.contains('popup')) {
@@ -17,8 +18,8 @@ export function handleCloseModal (evt) {
 };
 
 export function closeModalEcs (event) {
-    let openPopup = document.querySelector('.popup_is-opened');
     if (event.key === "Escape") {
+        const openPopup = document.querySelector('.popup_is-opened');
         closeModal(openPopup);
     }
 };
