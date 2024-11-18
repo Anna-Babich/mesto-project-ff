@@ -7,7 +7,14 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  display: flex;
 }
+
+.profile__image:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-blend-mode: multiply;
+}
+
 
 @media screen and (max-width: 740px) {
   .profile__image {
@@ -20,3 +27,16 @@
     margin-right: 0;
   }
 }
+
+.profile__image-svg {
+  margin: auto;
+  display: none;
+  z-index:1000;
+  opacity: 1;
+}
+
+.profile__image:hover .profile__image-svg {
+  display: block;
+}
+
+
