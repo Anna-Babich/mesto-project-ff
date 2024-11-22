@@ -1,13 +1,3 @@
-export const validationConfig = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-};
-
-
 function showInputError(
     formElement, 
     inputElement, 
@@ -31,7 +21,7 @@ function hideInputError(
     inputElement.classList.remove(inputErrorClass);
     errorElement.classList.remove(errorClass);
     errorElement.textContent = '';
-    inputElement.setCustomValidity(''); // 7 строка valid.
+    inputElement.setCustomValidity('');
 };
 
 const isValid = (formElement, inputElement, inputErrorClass, errorClass) => {

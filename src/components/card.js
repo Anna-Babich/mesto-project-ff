@@ -1,7 +1,7 @@
 import {cardTemplate} from '../index.js';
-import {removeDeleteCard, putLikeData, deleteLikeData, getUsersData} from '../components/api.js';
+import {removeDeleteCard, putLikeData, deleteLikeData} from '../components/api.js';
 
-export function createCard (link, name, like, likeArray, idOwner, idCard, deleteBtn, likeBtn, contentImage) {
+export function createCard (link, name, like, likeArray, idOwner, idCard, deleteBtn, likeBtn, contentImage, myId) {
   const card = cardTemplate.querySelector('.places__item');
   const cardContent = card.cloneNode(true);
   const deleteButton = cardContent.querySelector('.card__delete-button');
@@ -9,10 +9,10 @@ export function createCard (link, name, like, likeArray, idOwner, idCard, delete
   const cardImage = cardContent.querySelector('.card__image');
   const cardTitle = cardContent.querySelector('.card__title');
   const likeSpan = cardContent.querySelector('.likes');
-  
+
   viewLikeCount(like, likeSpan);
-  viewMyLike(likeArray, cardLikeBtn);
-  removeDeleteButton(idOwner, deleteButton);
+  viewMyLike(likeArray, cardLikeBtn, myId);
+  removeDeleteButton(idOwner, deleteButton, myId);
 
   cardImage.src = link;
   cardImage.alt = name;
@@ -39,16 +39,16 @@ export function deleteCard (event, idCard) {
 export function likeCard (event, idCard, span) {
   if(event.target.classList.contains('card__like-button')) {
     if(event.target.classList.contains('card__like-button_is-active')) {
-      event.target.classList.remove('card__like-button_is-active');
       deleteLikeData(idCard)
         .then(res => {
+          event.target.classList.remove('card__like-button_is-active');
           span.textContent = res.likes.length;
         })
         .catch((err) => alert(`Ошибка: ${err}`));
     } else {
-      event.target.classList.add('card__like-button_is-active');
       putLikeData(idCard)
         .then((res) => {
+          event.target.classList.add('card__like-button_is-active');
           span.textContent = res.likes.length;
         })
         .catch((err) => alert(`Ошибка: ${err}`));
@@ -66,28 +66,17 @@ function viewLikeCount (l, span) {
   }
 };
 
-// Получение id
-function getMyId() {
-  return getUsersData()
-    .then((res) => {
-      let userId = res._id;
-      myId = userId;
-      return myId;
-    })
-};
-let myId = getMyId();
 
 // проверка моего лайка
-function viewMyLike (arrayLike, likeBtn) {
-  arrayLike.forEach((item) => {
-    if(item._id === myId) {
-      likeBtn.classList.add('card__like-button_is-active');
-    }
-  });
+function viewMyLike (arrayLike, likeBtn, myId) {
+  arrayLike.some((item) => {
+    item._id === myId
+    return likeBtn.classList.add('card__like-button_is-active');
+  })
 }
 
 // Удаление 'корзины' у других польхователей
-function removeDeleteButton (id, button) {
+function removeDeleteButton (id, button, myId) {
   if(!(id === myId)) {
     button.remove();
   }
